@@ -1,58 +1,57 @@
 <template>
-  <div class="car-details text-center">
+  <div class="job-details">
     <h1>Welcome to the details page</h1>
-    <img class="" :src="state.car.imgUrl" alt="car">
-    <h3>{{ state.car.description }}</h3>
-    <h3>{{ state.car.make}}</h3>
-    <h3>{{state.car.model}}</h3>
-    <h3>{{state.car.year}}</h3>
-     <button type="button" class="btn btn-outline-danger" @click="deleteCar">
-      Delete Car
+    <h3>{{ state.job.description }}</h3>
+    <h3>{{ state.job.company}} </h3>
+    <h3>{{state.job.rate}} </h3>
+    <h3>{{state.job.hours}}</h3>
+    <button type="button" class="btn btn-outline-danger" @click="deleteJob">
+      Delete Job
     </button>
 
-    <form class="form-inline py-4" onsubmit="app.carsController.createCar(event)">
+    <form class="form-inline" onsubmit="app.jobsController.createJob(event)">
       <div class="form-group">
         <input
           type="text"
-          name="make"
-          id="make"
+          name="jobTitle"
+          id="jobTitle"
           class="form-control"
-          placeholder="Make"
+          placeholder="Job Title"
           aria-describedby="helpId"
-          v-model="state.car.make"
+          v-model="state.job.jobTitle"
         />
       </div>
       <div class="form-group">
         <input
           type="text"
-          name="model"
-          id="model"
+          name="company"
+          id="company"
           class="form-control"
-          placeholder="Model"
+          placeholder="Company"
           aria-describedby="helpId"
-          v-model="state.car.model"
+          v-model="state.job.company"
         />
       </div>
       <div class="form-group">
         <input
           type="number"
-          name="year"
-          id="year"
+          name="rate"
+          id="rate"
           class="form-control"
-          placeholder="Year"
+          placeholder="Rate"
           aria-describedby="helpId"
-          v-model="state.car.year"
+          v-model="state.job.rate"
         />
       </div>
       <div class="form-group">
         <input
           type="number"
-          name="price"
-          id="price"
+          name="hours"
+          id="hours"
           class="form-control"
-          placeholder="Price"
+          placeholder="Hours"
           aria-describedby="helpId"
-          v-model="state.car.price"
+          v-model="state.job.hours"
         />
       </div>
       <div class="form-group">
@@ -63,18 +62,7 @@
           class="form-control"
           placeholder="Description"
           aria-describedby="helpId"
-          v-model="state.car.description"
-        />
-      </div>
-      <div class="form-group">
-        <input
-          type="text"
-          name="imgUrl"
-          id="imgUrl"
-          class="form-control"
-          placeholder="ImgUrl"
-          aria-describedby="helpId"
-          v-model="state.car.imgUrl"
+          v-model="state.job.description"
         />
       </div>
       <button class="btn btn-info" type="submit">Create</button>
@@ -85,25 +73,25 @@
 <script>
 import { onMounted, reactive, computed } from 'vue'
 import { onBeforeRouteLeave, useRoute, useRouter } from 'vue-router'
-import { carsService } from '../services/CarsService'
+import { jobsService } from '../services/JobsService'
 import { AppState } from '../Appstate'
 
 export default {
-  name: 'CarDetails',
+  name: 'JobDetails',
   setup() {
     const route = useRoute()
     const router = useRouter()
     const state = reactive({
-      car: computed(() => AppState.activeCar)
+      job: computed(() => AppState.activeJob)
     })
 
     onMounted(() => {
-      carsService.getCar(route.params.id)
+      jobsService.getJob(route.params.id)
     })
 
     onBeforeRouteLeave((to, from, next) => {
       if (window.confirm('You sure bro?')) {
-        AppState.activeCar = {}
+        AppState.activeJob = {}
         next()
       }
     })
@@ -111,9 +99,9 @@ export default {
     return {
       route,
       state,
-      async deleteCar() {
-        await carsService.deleteCar(state.car._id)
-        router.push({ name: 'Cars' })
+      async deleteJob() {
+        await jobsService.deleteJob(state.job._id)
+        router.push({ name: 'JobsPage' })
       }
     }
   },

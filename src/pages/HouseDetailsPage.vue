@@ -1,36 +1,36 @@
 <template>
-  <div class="car-details text-center">
+  <div class="house-details">
     <h1>Welcome to the details page</h1>
-    <img class="" :src="state.car.imgUrl" alt="car">
-    <h3>{{ state.car.description }}</h3>
-    <h3>{{ state.car.make}}</h3>
-    <h3>{{state.car.model}}</h3>
-    <h3>{{state.car.year}}</h3>
-     <button type="button" class="btn btn-outline-danger" @click="deleteCar">
-      Delete Car
+    <img class="" :src="state.house.imgUrl" alt="house">
+    <h3>{{ state.house.description }}</h3>
+    <h3>{{ state.house.bedrooms}} Bedrooms</h3>
+    <h3>{{state.house.bathrooms}} Bathrooms</h3>
+    <h3>{{state.house.year}}</h3>
+    <button type="button" class="btn btn-outline-danger" @click="deleteHouse">
+      Delete House
     </button>
 
-    <form class="form-inline py-4" onsubmit="app.carsController.createCar(event)">
+    <form class="form-inline" onsubmit="app.housesController.createHouse(event)">
       <div class="form-group">
         <input
           type="text"
-          name="make"
-          id="make"
+          name="bedrooms"
+          id="bedrooms"
           class="form-control"
-          placeholder="Make"
+          placeholder="Bedrooms"
           aria-describedby="helpId"
-          v-model="state.car.make"
+          v-model="state.house.bedrooms"
         />
       </div>
       <div class="form-group">
         <input
           type="text"
-          name="model"
-          id="model"
+          name="bathrooms"
+          id="bathrooms"
           class="form-control"
-          placeholder="Model"
+          placeholder="Bathroom"
           aria-describedby="helpId"
-          v-model="state.car.model"
+          v-model="state.house.bathrooms"
         />
       </div>
       <div class="form-group">
@@ -41,7 +41,7 @@
           class="form-control"
           placeholder="Year"
           aria-describedby="helpId"
-          v-model="state.car.year"
+          v-model="state.house.year"
         />
       </div>
       <div class="form-group">
@@ -52,7 +52,7 @@
           class="form-control"
           placeholder="Price"
           aria-describedby="helpId"
-          v-model="state.car.price"
+          v-model="state.house.price"
         />
       </div>
       <div class="form-group">
@@ -63,7 +63,18 @@
           class="form-control"
           placeholder="Description"
           aria-describedby="helpId"
-          v-model="state.car.description"
+          v-model="state.house.description"
+        />
+      </div>
+       <div class="form-group">
+        <input
+          type="number"
+          name="levels"
+          id="levels"
+          class="form-control"
+          placeholder="Levels"
+          aria-describedby="helpId"
+          v-model="state.house.levels"
         />
       </div>
       <div class="form-group">
@@ -74,7 +85,7 @@
           class="form-control"
           placeholder="ImgUrl"
           aria-describedby="helpId"
-          v-model="state.car.imgUrl"
+          v-model="state.house.imgUrl"
         />
       </div>
       <button class="btn btn-info" type="submit">Create</button>
@@ -85,25 +96,25 @@
 <script>
 import { onMounted, reactive, computed } from 'vue'
 import { onBeforeRouteLeave, useRoute, useRouter } from 'vue-router'
-import { carsService } from '../services/CarsService'
+import { housesService } from '../services/HousesService'
 import { AppState } from '../Appstate'
 
 export default {
-  name: 'CarDetails',
+  name: 'HouseDetails',
   setup() {
     const route = useRoute()
     const router = useRouter()
     const state = reactive({
-      car: computed(() => AppState.activeCar)
+      house: computed(() => AppState.activeHouse)
     })
 
     onMounted(() => {
-      carsService.getCar(route.params.id)
+      housesService.getHouse(route.params.id)
     })
 
     onBeforeRouteLeave((to, from, next) => {
       if (window.confirm('You sure bro?')) {
-        AppState.activeCar = {}
+        AppState.activeHouse = {}
         next()
       }
     })
@@ -111,9 +122,9 @@ export default {
     return {
       route,
       state,
-      async deleteCar() {
-        await carsService.deleteCar(state.car._id)
-        router.push({ name: 'Cars' })
+      async deleteHouse() {
+        await housesService.deleteHouse(state.house._id)
+        router.push({ name: 'HousesPage' })
       }
     }
   },

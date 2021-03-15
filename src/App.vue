@@ -1,12 +1,15 @@
 <template>
   <div class="app">
-    <header class="container-fluid bg-info text-light">
+    <header class="container-fluid bg-danger text-light">
       <div class="row">
         <div class="col text-center">
           <h1>Gregslist</h1>
           <div class="text-light">
             <router-link :to="{name: 'Home'}">Home</router-link> |
-            <router-link :to="{name: 'Cars'}">Cars</router-link>
+            <router-link :to="{name: 'Cars'}">Cars</router-link> |
+            <router-link :to="{name: 'HousesPage'}">Houses</router-link> |
+            <router-link :to="{name: 'JobsPage'}">Jobs</router-link>
+
           </div>
         </div>
       </div>
